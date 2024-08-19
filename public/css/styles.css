@@ -10,7 +10,7 @@ B6C7AA - green */
     padding: 0;
     margin: 0;
     box-sizing: border-box;
-    color: #F6E6CB;
+    
 }
 
 body{
@@ -38,6 +38,7 @@ nav ul a{
     text-transform: uppercase;
     font-weight: 600;
     font-size: 2vw;
+    color: #F6E6CB;
 }
 nav ul img{
     width: 20vw;
@@ -59,13 +60,13 @@ nav ul img{
     nav ul{
         flex-direction: column;
         gap: 1vh;
-        height: calc(5*6vw + 8*1vh );
+        height: calc(5*6vw + 9*1vh );
         padding-top: 1vh;
         padding-bottom: 1vh;
     }
 }
 
-#home h1{
+#welcome{
     color: #A0937D;
     width: 100vw;
     padding-top: 6vh;
@@ -86,6 +87,35 @@ nav ul img{
 }
 
 #home {
-    height: 70vh;
+    height: 140vh;
     background-color: #F6E6CB;
+}
+
+#home section{
+    display: flex;
+    width: 100vw;
+    justify-content: space-between;
+    padding-left: 5vw;
+    padding-right: 5vw;
+}
+#home img{
+    width: 45vw;
+}
+#loginHome{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    
+}
+#loginHome h1{
+    font-size: 7vw;
+    text-align: center;
+}
+@media(max-width:700px){
+    #home section{
+        flex-direction: column;
+    }
+    #home img{
+        width: 80vw;
+    }
 }
