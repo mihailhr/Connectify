@@ -2,9 +2,9 @@
 A0937D
 E7D4B5
 F6E6CB
-B6C7AA - green */
+235347 - green */
 
-
+@import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css");
 
 *{
     padding: 0;
@@ -66,6 +66,59 @@ nav ul img{
     }
 }
 
+footer{
+    
+    min-height: 20vh;
+    width: 100vw;
+    background-color: #A0937D ;
+    
+}
+#footerIcons{
+    width: 40vw;
+    margin: 0 auto;
+    background-color: darkolivegreen;
+    display: flex;
+    justify-content: space-around;
+    padding: 0.5vw;
+    border-bottom-left-radius: 40px;
+    border-bottom-right-radius: 40px;
+}
+#footerIcons i{
+    font-size: 4vw;
+    color: #F6E6CB;
+}
+footer #miniMenu ul{
+    display: flex;
+    width: 60vw;
+    margin: 3vh auto;
+    justify-content: space-around;
+    list-style: none;
+    
+}
+footer #miniMenu a{
+    text-decoration: none;
+    color: #F6E6CB;
+    text-transform: uppercase;
+    font-size: 1.5vw;
+}
+#copyrightSection{
+    text-align: center;
+    font-size: 1.7vw;
+    
+    display: flex;
+    justify-content: center;
+   
+}
+#copyright{
+    width: 60vw;
+    padding: 1vh;
+    border-top-left-radius: 40px;
+    border-top-right-radius: 40px;
+    background-color: #F6E6CB;
+    color: #A0937D;
+    font-weight: 600;
+}
+
 #welcome{
     color: #A0937D;
     width: 100vw;
@@ -87,8 +140,9 @@ nav ul img{
 }
 
 #home {
-    height: 140vh;
+   
     background-color: #F6E6CB;
+    padding-bottom: 10vh;
 }
 
 #home section{
@@ -105,17 +159,57 @@ nav ul img{
     display: flex;
     flex-direction: column;
     align-items: center;
-    
+    gap: 5vh;
+    width: 40vw;
+    margin-top: 40vh;
+    color: #A0937D;
+   
+}
+#loginHome label{
+    font-size: 3vw;
+    margin-right: 3vw;
+}
+
+#loginHome input{
+    width: 15vw;
+    height: 8vh;
+    border-radius: 20vw;
+   
+}
+#loginHome #submitHome{
+    width: 33vw;
+    margin-top: 3vh;
+    font-size: 3vw ;
 }
 #loginHome h1{
     font-size: 7vw;
     text-align: center;
 }
-@media(max-width:700px){
+@media(max-width:1100px){
     #home section{
         flex-direction: column;
     }
+   
     #home img{
         width: 80vw;
+    }
+    #loginHome{
+        width: 80vw;
+        margin-top: 10vh;
+    }
+    #loginHome input{
+        width: 45vw;
+    }
+    #loginHome label{
+        font-size: 6vw;
+    }
+    #loginHome #submitHome{
+        width: 70vw;
+        font-size: 5vw;
+    }
+}
+@media(max-width:1550px){
+    #loginHome{
+        margin-top: 20vh;
     }
 }
