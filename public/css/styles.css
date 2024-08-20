@@ -230,3 +230,44 @@ footer #miniMenu a{
         margin-top: 20vh;
     }
 }
+
+
+/* Register page */
+#register{
+    height: 80vh;
+    width: 100vw;
+    background-color: #F6E6CB;
+    
+}
+#register h1{
+    text-align: center;
+    padding: 5vh 0;
+    color: darkolivegreen;
+    font-size: 3.5vw;
+}
+#register form{
+    display: flex;
+    flex-direction: column;
+    width: 50vw;
+    margin: auto;
+    text-align: center;
+    gap: 1vh;
+    align-items: center;
+}
+#register input{
+    width: 70%;
+    height: 4vh;
+    padding: 1vh;
+    border-radius: 10vw;
+    font-size: 1vw;
+}
+#register label{
+    font-size: 3vw;
+}
+
+input:invalid {
+    color: red;
+}
+input:valid{
+    color: darkolivegreen;
+}
