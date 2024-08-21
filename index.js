@@ -1,58 +1,68 @@
-const express=require("express")
-const handlebars=require("express-handlebars")
-const path=require("path")
-const mongoose=require("mongoose")
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const express = require("express");
+const handlebars = require("express-handlebars");
+const path = require("path");
+const mongoose = require("mongoose");
+const User = require("./Mongoose models/user");
+const bodyParser = require("body-parser");
+const bcrypt=require("bcrypt")
 require('dotenv').config();
 
-const app=express()
-app.use(express.static(path.join(__dirname,"public")))
-app.engine("handlebars",handlebars.engine())
-app.set("view engine","handlebars")
-app.set("views",path.join(__dirname,"views"))
+const app = express();
+app.use(express.static(path.join(__dirname, "public")));
+app.use(bodyParser.json())
+app.use(express.urlencoded({extended:false}))
+
+app.engine("handlebars", handlebars.engine());
+app.set("view engine", "handlebars");
+app.set("views", path.join(__dirname, "views"));
 
 
-
-app.get("/",(req,res)=>{
-    res.render("home")
-})
-
-app.get("/register",(req,res)=>{
-    res.render("register")
-})
-
-app.get("/mainFeed",(req,res)=>{
-    res.render("mainFeed")
-})
-
-app.get("/about",(req,res)=>{
-    res.render("about")
-})
-
-
-const uri = process.env.URI
-
-// Create a MongoClient with a MongoClientOptions object to set the Stable API version
-const client = new MongoClient(uri, {
-  serverApi: {
-    version: ServerApiVersion.v1,
-    strict: true,
-    deprecationErrors: true,
-  }
+app.get("/", (req, res) => {
+    res.render("home");
 });
-async function run() {
-  try {
-    // Connect the client to the server	(optional starting in v4.7)
-    await client.connect();
-    // Send a ping to confirm a successful connection
-    await client.db("admin").command({ ping: 1 });
-    console.log("Pinged your deployment. You successfully connected to MongoDB!");
-  } finally {
-    // Ensures that the client will close when you finish/error
-    await client.close();
-  }
-}
-run().catch(console.dir);
 
-app.listen(3000)
+app.get("/register", (req, res) => {
+    res.render("register");
+});
 
+app.get("/mainFeed", (req, res) => {
+    res.render("mainFeed");
+});
+
+app.get("/about", (req, res) => {
+    res.render("about");
+});
+
+app.post('/register', async (req, res) => {
+  console.log(req.body)
+    try {
+        const hashedPass=await bcrypt.hash(req.body.password,10)
+        req.body.password=hashedPass
+        const newUser = await User.create(req.body);
+        return res.status(200).send('User registered successfully');
+    } catch (err) {
+        console.error('Error creating user:', err);
+        return res.status(500).send('Error creating user');
+    }
+});
+
+
+const uri = process.env.URI;
+
+mongoose.connect(uri)
+.then(() => {
+    console.log("Connected to MongoDB via Mongoose");
+    app.listen(3000, () => {
+        console.log("Server is running on port 3000");
+    });
+})
+.catch(err => {
+    console.error("Mongoose connection error:", err);
+    process.exit(1); 
+});
+
+process.on('SIGINT', async () => {
+    await mongoose.connection.close();
+    console.log("Mongoose connection closed due to application termination");
+    process.exit(0);
+});
