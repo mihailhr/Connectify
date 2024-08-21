@@ -15,6 +15,7 @@
             <li><a href="/about">About</a></li>
             {{#if isAuth}}
             <li><a href="/myAccount">My account</a></li>
+            <li><a href="/upload">Upload</a></li>
             <li><a href="/logOut">Log out</a></li>
             {{else}}
             <li><a href="/register">Register</a></li>
@@ -33,10 +34,17 @@
         </section>
         <section id="miniMenu">
             <ul>
-                <li><a href="/">Home</a></li>
-                <li><a href="/mainFeed">Main Feed</a></li>
-                <li><a href="/register">Register</a></li>
-                <li><a href="/about">About</a></li>
+               <li><a href="/">Home</a></li>
+            <li><a href="/mainFeed">Main Feed</a></li>
+            
+            <li><a href="/about">About</a></li>
+            {{#if isAuth}}
+            <li><a href="/myAccount">My account</a></li>
+            <li><a href="/upload">Upload</a></li>
+            <li><a href="/logOut">Log out</a></li>
+            {{else}}
+            <li><a href="/register">Register</a></li>
+            {{/if}}
             </ul>
         </section>
         <section id="copyrightSection">

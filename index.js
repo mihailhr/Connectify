@@ -89,6 +89,12 @@ app.get("/logUserOut",(req,res)=>{
   res.clearCookie("token").redirect("/")
 })
 
+app.get("/upload",(req,res)=>{
+  if(!req.isAuth){
+    return res.redirect("/")
+  }
+  res.render("upload",{isAuth:req.isAuth})
+})
 
 app.post('/register', async (req, res) => {
   
@@ -121,8 +127,10 @@ app.post("/",async (req,res)=>{
       return res.render("home",{isAuth:req.isAuth, error:"Incorrect username or password"})
     }
     const token=jwt.sign({username:req.body.username},secret,{expiresIn:"3d"})
+    res.cookie("token", token);
+    
     console.log(3)
-    return res.status(200).cookie("token",token).render("home",{isAuth:req.isAuth})
+    return res.status(200).render("home",{isAuth:true})
 
   } catch (error) {
     return res.render("/",{isAuth:req.isAuth, error:error})
