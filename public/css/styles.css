@@ -233,15 +233,30 @@ footer #miniMenu a{
 
 
 /* Register page */
+
+/* Not finished !!!!! */
 #register{
-    height: 80vh;
+    height: 100vh;
     width: 100vw;
     background-color: #F6E6CB;
     
 }
+@media(max-width:1100px){
+    #register{
+        height: 100vw
+    }
+}
 #register h1{
     text-align: center;
     padding: 5vh 0;
+    padding-bottom: 3vh;
+    color: darkolivegreen;
+    font-size: 3.5vw;
+    color: darkolivegreen;
+}
+#registerError{
+    text-align: center;
+    padding: 3vh 0;
     color: darkolivegreen;
     font-size: 3.5vw;
 }

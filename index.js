@@ -5,49 +5,26 @@ const mongoose = require("mongoose");
 const User = require("./Mongoose models/user");
 const bodyParser = require("body-parser");
 const bcrypt=require("bcrypt")
+const cookieParser=require("cookie-parser")
+const jwt=require("jsonwebtoken");
+const authenticateToken = require("./Middlewares/auth");
 require('dotenv').config();
 
+const uri = process.env.URI;
+const secret=process.env.secret
+
+
 const app = express();
+app.use(cookieParser())
 app.use(express.static(path.join(__dirname, "public")));
 app.use(bodyParser.json())
 app.use(express.urlencoded({extended:false}))
+app.use(authenticateToken)
+
 
 app.engine("handlebars", handlebars.engine());
 app.set("view engine", "handlebars");
 app.set("views", path.join(__dirname, "views"));
-
-
-app.get("/", (req, res) => {
-    res.render("home");
-});
-
-app.get("/register", (req, res) => {
-    res.render("register");
-});
-
-app.get("/mainFeed", (req, res) => {
-    res.render("mainFeed");
-});
-
-app.get("/about", (req, res) => {
-    res.render("about");
-});
-
-app.post('/register', async (req, res) => {
-  console.log(req.body)
-    try {
-        const hashedPass=await bcrypt.hash(req.body.password,10)
-        req.body.password=hashedPass
-        const newUser = await User.create(req.body);
-        return res.status(200).send('User registered successfully');
-    } catch (err) {
-        console.error('Error creating user:', err);
-        return res.status(500).send('Error creating user');
-    }
-});
-
-
-const uri = process.env.URI;
 
 mongoose.connect(uri)
 .then(() => {
@@ -66,3 +43,70 @@ process.on('SIGINT', async () => {
     console.log("Mongoose connection closed due to application termination");
     process.exit(0);
 });
+
+
+app.get("/", (req, res) => {
+  console.log(req.isAuth)
+  
+  return res.render("home",{isAuth:req.isAuth})
+    
+});
+
+app.get("/register", (req, res) => {
+    if(req.isAuth){
+      return res.redirect("home")
+    }
+    res.render("register",{isAuth:req.isAuth});
+});
+
+app.get("/mainFeed", (req, res) => {
+    res.render("mainFeed",{isAuth:req.isAuth});
+});
+
+app.get("/about", (req, res) => {
+    res.render("about");
+});
+
+app.get("/myAccount",(req,res)=>{
+  if(!req.isAuth){
+    return res.redirect("/")
+  }
+  res.render("myAccount",{isAuth:req.isAuth})
+})
+
+app.get("/logOut",(req,res)=>{
+  if(!req.isAuth){
+    return res.redirect("/")
+  }
+  res.render("logOut")
+})
+
+app.get("/logUserOut",(req,res)=>{
+  if(!req.isAuth){
+    return res.redirect("/")
+  }
+  res.clearCookie("token").redirect("/")
+})
+
+
+app.post('/register', async (req, res) => {
+  
+
+  if(req.body.password!==req.body.rePass){
+    return res.render("register",{error:"Invalid password confirmation"})
+  }
+    try {
+        const hashedPass=await bcrypt.hash(req.body.password,10)
+        req.body.password=hashedPass
+        const newUser = await User.create(req.body);
+        const token=jwt.sign({username:req.body.username},secret,{expiresIn:"3d"})
+        return res.status(200).cookie("token",token).redirect("/")
+    } catch (err) {
+        console.error('Error creating user:', err);
+        return res.render("register",{error:err,isAuth:req.isAuth})
+    }
+});
+
+
+
+
