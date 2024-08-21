@@ -54,7 +54,7 @@ app.get("/", (req, res) => {
 
 app.get("/register", (req, res) => {
     if(req.isAuth){
-      return res.redirect("home")
+      return res.redirect("/")
     }
     res.render("register",{isAuth:req.isAuth});
 });
@@ -64,14 +64,15 @@ app.get("/mainFeed", (req, res) => {
 });
 
 app.get("/about", (req, res) => {
-    res.render("about");
+    res.render("about",{isAuth:req.isAuth});
 });
 
 app.get("/myAccount",(req,res)=>{
   if(!req.isAuth){
     return res.redirect("/")
   }
-  res.render("myAccount",{isAuth:req.isAuth})
+  console.log(req.user)
+  res.render("myAccount",{isAuth:req.isAuth,user:req.user})
 })
 
 app.get("/logOut",(req,res)=>{
@@ -107,6 +108,26 @@ app.post('/register', async (req, res) => {
     }
 });
 
+app.post("/",async (req,res)=>{
+  try {
+    const userExists=await User.findOne({username:req.body.username})
+    if(!userExists){
+      console.log(1)
+      return res.render("home",{isAuth:req.isAuth, error:"Invalid username"})
+    }
+    const checkingPassword=await bcrypt.compare(req.body.password,userExists.password)
+    if(!checkingPassword){
+      console.log(2)
+      return res.render("home",{isAuth:req.isAuth, error:"Incorrect username or password"})
+    }
+    const token=jwt.sign({username:req.body.username},secret,{expiresIn:"3d"})
+    console.log(3)
+    return res.status(200).cookie("token",token).render("home",{isAuth:req.isAuth})
+
+  } catch (error) {
+    return res.render("/",{isAuth:req.isAuth, error:error})
+  }
+})
 
 
 

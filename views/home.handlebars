@@ -2,18 +2,26 @@
     <h1 id="welcome">Welcome</h1>
     <section >
         <img src="/images/logo-no-background.png" alt="">
+        {{#if isAuth}}
+
+        <h1>hey</h1>
+
+        {{else}}
         <article id="loginHome">
             <h1>Log in</h1>
-                <form action="">
+            {{#if error}}
+            <h2>{{error}}</h2>
+            {{/if}}
+                <form action="/" method="post">
                 <label for="">Username</label>
-                <input type="text" name="" id="">
+                <input type="text" name="username" minlength="5" required>
                 <br>
                 <label for="">Password</label>
-                <input type="password">
+                <input type="password" name="password" minlength="5" required>
                 <br>
                 <input id="submitHome" type="submit">
             </form>
         </article>
-        
+        {{/if}}
     </section>
 </div>

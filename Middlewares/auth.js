@@ -17,7 +17,8 @@ function authenticateToken(req,res,next){
 
 
         req.isAuth = true;
-        req.user = decoded; 
+        req.user=decoded.username
+        
     } catch (err) {
         req.isAuth = false;
     }
