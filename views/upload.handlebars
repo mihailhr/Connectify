@@ -1,1 +1,9 @@
 <h1>Upload</h1>
+<form action="/upload" method="post" enctype="multipart/form-data">
+<label for="">Title</label> <br>
+<input type="text" minlength="2" name="title" maxlength="20"> <br>
+<label for="">Description</label> <br>
+<input type="text" minlength="10" maxlength="100" name="description"> <br>
+<input type="file" accept="image/*" name="image" required> <br>
+<input type="submit">
+</form>

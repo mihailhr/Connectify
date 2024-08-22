@@ -8,6 +8,9 @@ const bcrypt=require("bcrypt")
 const cookieParser=require("cookie-parser")
 const jwt=require("jsonwebtoken");
 const authenticateToken = require("./Middlewares/auth");
+const multer=require("multer")
+const fs=require("fs");
+const Photo = require("./Mongoose models/photo");
 require('dotenv').config();
 
 const uri = process.env.URI;
@@ -17,12 +20,18 @@ const secret=process.env.secret
 const app = express();
 app.use(cookieParser())
 app.use(express.static(path.join(__dirname, "public")));
+app.use(express.static(path.join(__dirname,"uploads")))
 app.use(bodyParser.json())
 app.use(express.urlencoded({extended:false}))
 app.use(authenticateToken)
 
 
-app.engine("handlebars", handlebars.engine());
+app.engine("handlebars", handlebars.engine({
+  runtimeOptions: {
+    allowProtoPropertiesByDefault: true,
+    allowProtoMethodsByDefault: true
+  }
+}));
 app.set("view engine", "handlebars");
 app.set("views", path.join(__dirname, "views"));
 
@@ -43,6 +52,21 @@ process.on('SIGINT', async () => {
     console.log("Mongoose connection closed due to application termination");
     process.exit(0);
 });
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    const uploadPath = path.join(__dirname,"uploads")
+    if (!fs.existsSync(uploadPath)) {
+      fs.mkdirSync(uploadPath, { recursive: true });
+    }
+    cb(null, uploadPath);
+  },
+  filename: (req, file, cb) => {
+    cb(null, `${Date.now()}-${file.originalname}`);
+  }
+});
+
+const upload = multer({ storage });
+
 
 
 app.get("/", (req, res) => {
@@ -51,6 +75,9 @@ app.get("/", (req, res) => {
   return res.render("home",{isAuth:req.isAuth})
     
 });
+app.get("/test",(req,res)=>{
+  res.render("test")
+})
 
 app.get("/register", (req, res) => {
     if(req.isAuth){
@@ -59,9 +86,7 @@ app.get("/register", (req, res) => {
     res.render("register",{isAuth:req.isAuth});
 });
 
-app.get("/mainFeed", (req, res) => {
-    res.render("mainFeed",{isAuth:req.isAuth});
-});
+
 
 app.get("/about", (req, res) => {
     res.render("about",{isAuth:req.isAuth});
@@ -79,7 +104,7 @@ app.get("/logOut",(req,res)=>{
   if(!req.isAuth){
     return res.redirect("/")
   }
-  res.render("logOut")
+  res.render("logOut",{isAuth:req.isAuth})
 })
 
 app.get("/logUserOut",(req,res)=>{
@@ -95,6 +120,22 @@ app.get("/upload",(req,res)=>{
   }
   res.render("upload",{isAuth:req.isAuth})
 })
+
+app.get("/mainFeed",async (req,res)=>{
+  
+  try {
+    
+    const allImages=await Photo.find()
+    
+    res.render("mainFeed",{images:allImages,isAuth:req.isAuth})
+  } catch (error) {
+     res.status(500).send(error);
+  }
+})
+
+
+
+
 
 app.post('/register', async (req, res) => {
   
@@ -137,5 +178,23 @@ app.post("/",async (req,res)=>{
   }
 })
 
+app.post("/upload", upload.single("image"),async (req,res)=>{
+  const newImage = new Photo({
+    filename: req.file.filename,
+    path: req.file.path,
+    contentType: req.file.mimetype,
+    originalName: req.file.originalname,
+    description:req.body.description,
+    title:req.body.title,
+    creator:req.user
+  });
+
+  try {
+    await newImage.save();
+    res.status(201).send('Image uploaded and saved successfully');
+  } catch (err) {
+    res.status(500).send('Error saving image');
+  }
+})
 
 
