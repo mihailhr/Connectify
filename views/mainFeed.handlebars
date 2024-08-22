@@ -1,16 +1,16 @@
 <h1>Main feed</h1>
 
- {{#if images}}
-    <ul>
-      {{#each images}}
-        <li>
-            <h2>{{title}}</h2>
-          <p>{{description}}</p>
-          <img src="/{{filename}}" alt="{{title}}">
-          <a href="">{{creator}}</a>
-        </li>
-      {{/each}}
-    </ul>
-  {{else}}
-    <p>No images have been posted yet.</p>
-  {{/if}}
+{{#if images}}
+  <ul>
+    {{#each images}}
+      <li>
+        <h2>{{title}}</h2>
+        <p>{{description}}</p>
+        <img src="/{{filename}}" alt="{{title}}" />
+        <a href>{{creator}}</a>
+      </li>
+    {{/each}}
+  </ul>
+{{else}}
+  <p>No images have been posted yet.</p>
+{{/if}}

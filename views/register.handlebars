@@ -1,19 +1,19 @@
 <div id="register">
-    <h1>Create a new account</h1>
-    {{#if error}}
-        <h2 id="registerError">{{error}}</h2>
-    {{/if}}
-    <form action="/register" method="post">
-        <label for="">Username</label>
-        <input type="text" name="username" id="" minlength="6" required>
-        <label for="">Email</label>
-        <input type="text" name="email" id="" minlength="5" required>
-        <label for="">Password</label>
-        <input type="password" name="password" id="" minlength="8" required>
-        <label for="">Confirm password</label>
-        <input type="password" name="rePass" id="" minlength="8" required>
-        <input type="submit" name="" id="">
-        <p>Already have an account?</p>
-        <button><a href="/">Log in</a></button>
-    </form>
+  <h1>Create a new account</h1>
+  {{#if error}}
+    <h2 id="registerError">{{error}}</h2>
+  {{/if}}
+  <form action="/register" method="post">
+    <label for="">Username</label>
+    <input type="text" name="username" id="" minlength="6" required />
+    <label for="">Email</label>
+    <input type="text" name="email" id="" minlength="5" required />
+    <label for="">Password</label>
+    <input type="password" name="password" id="" minlength="8" required />
+    <label for="">Confirm password</label>
+    <input type="password" name="rePass" id="" minlength="8" required />
+    <input type="submit" name="" id="" />
+    <p>Already have an account?</p>
+    <button><a href="/">Log in</a></button>
+  </form>
 </div>

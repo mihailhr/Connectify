@@ -1,57 +1,63 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="/css/styles.css">
-</head>
-<body>
-    <nav>
-        <ul>
-            <li><a href="/">Home</a></li>
-            <li><a href="/mainFeed">Main Feed</a></li>
-            
-            <li><a href="/about">About</a></li>
-            {{#if isAuth}}
-            <li><a href="/myAccount">My account</a></li>
-            <li><a href="/upload">Upload</a></li>
-            <li><a href="/logOut">Log out</a></li>
-            {{else}}
-            <li><a href="/register">Register</a></li>
-            {{/if}}
-        </ul>
-    </nav>
-    <main>
-        {{{body}}}
-    </main>
-    <footer>
-        <section id="footerIcons">
-            <a href="https://github.com/mihailhr/Connectify" target="_blank"><i class="fa-brands fa-github"></i></a>
-            <a href="https://mail.google.com/mail/?view=cm&fs=1&to=mishohristov3@gmail.com&su=Subject%20Here&body=Your%20message%20here" target="_blank"><i class="fa-regular fa-envelope"></i></a>
-            <a href="" title="Coming soon"><i class="fa-brands fa-facebook"></i></a>
-            <a href="" title="Coming soon"><i class="fa-brands fa-instagram"></i></a>
-        </section>
-        <section id="miniMenu">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Document</title>
+        <link rel="stylesheet" href="/css/styles.css">
+    </head>
+    <body>
+        <nav>
             <ul>
-               <li><a href="/">Home</a></li>
-            <li><a href="/mainFeed">Main Feed</a></li>
-            
-            <li><a href="/about">About</a></li>
-            {{#if isAuth}}
-            <li><a href="/myAccount">My account</a></li>
-            <li><a href="/upload">Upload</a></li>
-            <li><a href="/logOut">Log out</a></li>
-            {{else}}
-            <li><a href="/register">Register</a></li>
-            {{/if}}
+                <li><a href="/">Home</a></li>
+                <li><a href="/mainFeed">Main Feed</a></li>
+
+                <li><a href="/about">About</a></li>
+                {{#if isAuth}}
+                <li><a href="/myAccount">My account</a></li>
+                <li><a href="/upload">Upload</a></li>
+                <li><a href="/logOut">Log out</a></li>
+                {{else}}
+                <li><a href="/register">Register</a></li>
+                {{/if}}
             </ul>
-        </section>
-        <section id="copyrightSection">
-            <p id="copyright">&copy;Connectify 2024 - All rights reserved</p>
-        </section>
-        
-    </footer>
-    
-</body>
+        </nav>
+        <main>
+            {{{body}}}
+        </main>
+        <footer>
+            <section id="footerIcons">
+                <a href="https://github.com/mihailhr/Connectify"
+                    target="_blank"><i class="fa-brands fa-github"></i></a>
+                <a
+                    href="https://mail.google.com/mail/?view=cm&fs=1&to=mishohristov3@gmail.com&su=Subject%20Here&body=Your%20message%20here"
+                    target="_blank"><i class="fa-regular fa-envelope"></i></a>
+                <a href title="Coming soon"><i
+                        class="fa-brands fa-facebook"></i></a>
+                <a href title="Coming soon"><i
+                        class="fa-brands fa-instagram"></i></a>
+            </section>
+            <section id="miniMenu">
+                <ul>
+                    <li><a href="/">Home</a></li>
+                    <li><a href="/mainFeed">Main Feed</a></li>
+
+                    <li><a href="/about">About</a></li>
+                    {{#if isAuth}}
+                    <li><a href="/myAccount">My account</a></li>
+                    <li><a href="/upload">Upload</a></li>
+                    <li><a href="/logOut">Log out</a></li>
+                    {{else}}
+                    <li><a href="/register">Register</a></li>
+                    {{/if}}
+                </ul>
+            </section>
+            <section id="copyrightSection">
+                <p id="copyright">&copy;Connectify 2024 - All rights
+                    reserved</p>
+            </section>
+
+        </footer>
+
+    </body>
 </html>
