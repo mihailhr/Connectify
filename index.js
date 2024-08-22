@@ -147,7 +147,18 @@ app.post("/register", async (req, res) => {
   if (req.body.password !== req.body.rePass) {
     return res.render("register", { error: "Invalid password confirmation" });
   }
+
   try {
+    const usernameTaken=await User.findOne({username:req.body.username})
+    const emailTaken=await User.findOne({email:req.body.email})
+    if(usernameTaken){
+      return res.render("register", { error: "This username is already being used." });
+    }
+    if(emailTaken){
+      return res.render("register", { error: "This email is already being used." });
+    }
+
+
     const hashedPass = await bcrypt.hash(req.body.password, 10);
     req.body.password = hashedPass;
     const newUser = await User.create(req.body);

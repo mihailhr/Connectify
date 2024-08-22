@@ -1,16 +1,21 @@
+
+<div id="mainFeed">
 <h1>Main feed</h1>
 
 {{#if images}}
   <ul>
     {{#each images}}
-      <li>
+      <li id="image">
+         <a href="/users/{{creator}}">Creator: {{creator}}</a>
         <h2>{{title}}</h2>
-        <p>{{description}}</p>
+        {{!-- <p>{{description}}</p> --}}
         <img src="/{{filename}}" alt="{{title}}" />
-        <a href="/users/{{creator}}">{{creator}}</a>
+       
       </li>
     {{/each}}
   </ul>
+  <p id="filler"></p>
 {{else}}
   <p>No images have been posted yet.</p>
 {{/if}}
+</div>

@@ -127,10 +127,10 @@ footer #miniMenu a{
     }
     footer #miniMenu ul{
         margin: 2vw auto;
-        
+        width: 90vw;
     }
     footer #miniMenu a{
-        font-size: 2.5vw;
+        font-size: 3vw;
     }
     #copyright{
         font-size: 3vw;
@@ -202,6 +202,24 @@ footer #miniMenu a{
     font-size: 7vw;
     text-align: center;
 }
+#loginHome p{
+    font-size: 2.5vw;
+    text-align: center;
+    padding-top: 3vh;
+}
+#loginHome button{
+    font-size: 1.5vw;
+    align-content: center;
+    width: 35vw;
+    margin-top: 2vh;
+    height: 6vh;
+    border-radius: 20vw;
+    
+}
+#loginHome button a{
+    color: darkolivegreen;
+    text-decoration: none;
+}
 @media(max-width:1100px){
     #home section{
         flex-direction: column;
@@ -213,6 +231,8 @@ footer #miniMenu a{
     #loginHome{
         width: 80vw;
         margin-top: 10vh;
+        margin-left: auto;
+        margin-right: auto;
     }
     #loginHome input{
         width: 45vw;
@@ -221,8 +241,19 @@ footer #miniMenu a{
         font-size: 6vw;
     }
     #loginHome #submitHome{
-        width: 70vw;
+        width: 80vw;
         font-size: 5vw;
+    }
+    #loginHome button{
+        width: 80vw;
+        height: 8vh;
+    }
+    #loginHome button a{
+        font-size: 5vw;
+    }
+    #loginHome p{
+        font-size: 6vw;
+        margin-top: 5vh;
     }
 }
 @media(max-width:1550px) and (min-width:1100px){
@@ -285,4 +316,103 @@ input:invalid {
 }
 input:valid{
     color: darkolivegreen;
+}
+
+#mainFeed{
+    width: 100vw;
+    background-color: #F6E6CB;
+    min-height: 70vh;
+}
+
+#mainFeed h1{
+   text-align: center;
+   text-transform: uppercase;
+    padding: 3vh  auto;
+    padding-top: 3vh;
+    color: darkolivegreen;
+}
+#mainFeed ul{
+    list-style: none;
+}
+#mainFeed #image{
+    width: 80vw;
+    height: 90vh;
+    margin: 2vh auto;
+    margin-bottom: 5vh;
+    background-color: #A0937D;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2vh;
+    border-radius: 5vw;
+}
+#mainFeed img{
+    width: 70vw;
+    align-self: center;
+    height: 70vh;
+}
+#filler{
+    width: 100vw;
+    height: 10vh;
+    background-color: #F6E6CB;
+}
+#mainFeed a{
+    text-decoration: none;
+    margin-top: 2vh;
+    color: darkolivegreen;
+    font-size: 2vw;
+}
+#mainFeed h2{
+    color: #F6E6CB;
+    font-size: 3vw;
+}
+
+
+#about{
+    background-color: #F6E6CB;
+    min-height: 100vh;
+    width: 100vw;
+    padding: 0px 3vw;
+}
+#about #initialH{
+padding-bottom: 1vh;
+padding-top: 2vh;
+background-color: darkolivegreen;
+width: 40vw;
+margin: 0 auto;
+margin-bottom: 2vh;
+color: #F6E6CB;
+border-bottom-left-radius: 2vw;
+border-bottom-right-radius: 2vw;
+text-align: center;
+text-transform: uppercase;
+}
+#aboutFirst{
+    width: 80vw;
+    margin: 0 auto;
+    text-align: center;
+}
+#mission{
+    text-align: center;
+    margin-top: 3vh;
+}
+#offers h1{
+text-align: center;
+margin-top: 4vh;
+text-transform: none;
+}
+#offers ul{
+    display: flex;
+    text-align: center;
+    list-style: none;
+    margin-top: 4vh;
+    margin-bottom: 4vh;
+    gap: 5vw;
+    padding: 0 3vw;
+    
+}
+
+#join{
+    text-align: center;
+    margin-top: 5vh;
 }
