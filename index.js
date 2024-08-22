@@ -11,6 +11,7 @@ const authenticateToken = require("./Middlewares/auth");
 const multer = require("multer");
 const fs = require("fs");
 const Photo = require("./Mongoose models/photo");
+const { error } = require("console");
 require("dotenv").config();
 
 const uri = process.env.URI;
@@ -71,7 +72,9 @@ const upload = multer({ storage });
 
 app.get("/", (req, res) => {
   console.log(req.isAuth);
-
+  if(req.isAuth){
+    return res.redirect("/mainFeed");
+  }
   return res.render("home", { isAuth: req.isAuth });
 });
 app.get("/test", (req, res) => {
@@ -80,7 +83,7 @@ app.get("/test", (req, res) => {
 
 app.get("/register", (req, res) => {
   if (req.isAuth) {
-    return res.redirect("/");
+    return res.redirect("/mainFeed");
   }
   res.render("register", { isAuth: req.isAuth });
 });
@@ -128,6 +131,18 @@ app.get("/mainFeed", async (req, res) => {
   }
 });
 
+
+app.get("/users/:id",async (req,res)=>{
+  const userFound=await User.findOne({username:req.params.id})
+  if(!userFound){
+    
+
+    return res.render("users",{isAuth:req.isAuth,error:"User not found"})
+  }
+  const posts=await Photo.find({creator:req.params.id})
+  res.render("users",{isAuth:req.isAuth,userInfo:userFound,posts})
+})
+
 app.post("/register", async (req, res) => {
   if (req.body.password !== req.body.rePass) {
     return res.render("register", { error: "Invalid password confirmation" });
@@ -139,7 +154,7 @@ app.post("/register", async (req, res) => {
     const token = jwt.sign({ username: req.body.username }, secret, {
       expiresIn: "3d",
     });
-    return res.status(200).cookie("token", token).redirect("/");
+    return res.status(200).cookie("token", token).redirect("/mainFeed");
   } catch (err) {
     console.error("Error creating user:", err);
     return res.render("register", { error: err, isAuth: req.isAuth });
@@ -173,7 +188,7 @@ app.post("/", async (req, res) => {
     res.cookie("token", token);
 
     console.log(3);
-    return res.status(200).render("home", { isAuth: true });
+    return res.status(200).redirect("/mainFeed")
   } catch (error) {
     return res.render("/", { isAuth: req.isAuth, error: error });
   }

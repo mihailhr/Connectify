@@ -1,0 +1,21 @@
+{{#if error}}
+  <h1>{{error}}</h1>
+{{else}}
+  <h1>Username: {{userInfo.username}}</h1>
+  <h1>Email: {{userInfo.email}}</h1>
+  <h1>Posts:</h1>
+
+  {{#if posts.length}}
+    <ul>
+      {{#each posts}}
+        <li>
+          <h2>{{title}}</h2>
+          <p>{{description}}</p>
+            <img src="/{{filename}}" alt="{{title}}" />
+        </li>
+      {{/each}}
+    </ul>
+  {{else}}
+    <h1>{{userInfo.username}} has not posted any photos yet.</h1>
+  {{/if}}
+{{/if}}
