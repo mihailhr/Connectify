@@ -1,14 +1,17 @@
+<div id="users">
 {{#if error}}
   <h1>{{error}}</h1>
 {{else}}
-  <h1>Username: {{userInfo.username}}</h1>
-  <h1>Email: {{userInfo.email}}</h1>
+  <h1 id="user">User: {{userInfo.username}}</h1>
+  <h1 id="contact">Contact {{userInfo.username}} <a
+                    href="https://mail.google.com/mail/?view=cm&fs=1&to={{userInfo.email}}&su=Subject%20Here&body=Your%20message%20here"
+                    target="_blank"><i class="fa-regular fa-envelope"></i></a></h1>
   <h1>Posts:</h1>
 
   {{#if posts.length}}
     <ul>
       {{#each posts}}
-        <li>
+        <li id="image">
           <h2>{{title}}</h2>
           <p>{{description}}</p>
             <img src="/{{filename}}" alt="{{title}}" />
@@ -19,3 +22,7 @@
     <h1>{{userInfo.username}} has not posted any photos yet.</h1>
   {{/if}}
 {{/if}}
+</div>
+
+
+
