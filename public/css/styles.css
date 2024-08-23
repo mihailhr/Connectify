@@ -366,7 +366,41 @@ input:valid{
     color: #F6E6CB;
     font-size: 3vw;
 }
-
+@media(max-width:400px) {
+    #mainFeed a{
+        font-size: 6vw;
+    }
+    #mainFeed h2{
+        font-size: 7vw;
+    }
+    #mainFeed #image{
+        width: 92vw;
+       
+    }
+    #mainFeed img{
+        width: 84vw;
+    }
+}
+@media(max-width:1000px)  and (min-width:400px){
+    #mainFeed a{
+        font-size: 4.5vw;
+    }
+    #mainFeed h2{
+        font-size: 5.5vw;
+    }
+    #mainFeed #image{
+        width: 88vw;
+        height: 90vh;
+    }
+    #mainFeed img{
+        width: 72vw;
+    }
+}
+@media(min-width:800px){
+    #mainFeed h1{
+        font-size: 5vw;
+    }
+}
 
 #about{
     background-color: #F6E6CB;
@@ -415,4 +449,48 @@ text-transform: none;
 #join{
     text-align: center;
     margin-top: 5vh;
+}
+
+#logout{
+    width: 100vw;
+    min-height: 63.6vh;
+    background-color: #F6E6CB;
+}
+
+#logout h1{
+    margin: 3vh auto;
+    margin-top: 0;
+    padding-top: 3vh;
+    text-align: center;
+}
+#logout section{
+    display: flex;
+    width: 100vw;
+    justify-content: center;
+    gap: 20vw;
+}
+#logout button{
+    font-size: 3vw;
+    padding: 1vw;
+    border-radius: 2vw;
+}
+
+
+
+#myAccount {
+    width: 100vw;
+    background-color: #F6E6CB;
+    min-height: 60vh;
+}
+#myAccount h1{
+    background-color: darkolivegreen;
+    width: 30vw;
+    text-align: center;
+    margin: 0 auto;
+    margin-bottom: 4vh;
+    border-bottom-left-radius: 2vw;
+    border-bottom-right-radius: 2vw;
+    color: #F6E6CB;
+    padding: 0.5vw;
+    text-transform: uppercase;
 }

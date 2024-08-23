@@ -6,7 +6,7 @@
   <ul>
     {{#each images}}
       <li id="image">
-         <a href="/users/{{creator}}">Creator: {{creator}}</a>
+         <a href="/users/{{creator}}"><i class="fa-solid fa-user"></i> {{creator}}</a>
         <h2>{{title}}</h2>
         {{!-- <p>{{description}}</p> --}}
         <img src="/{{filename}}" alt="{{title}}" />

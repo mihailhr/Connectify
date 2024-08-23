@@ -157,8 +157,6 @@ app.post("/register", async (req, res) => {
     if(emailTaken){
       return res.render("register", { error: "This email is already being used." });
     }
-
-
     const hashedPass = await bcrypt.hash(req.body.password, 10);
     req.body.password = hashedPass;
     const newUser = await User.create(req.body);
