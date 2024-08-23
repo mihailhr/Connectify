@@ -1,4 +1,5 @@
-<h1>Upload</h1>
+<div id="upload">
+<h1>Upload a photo</h1>
 <form action="/upload" method="post" enctype="multipart/form-data">
   <label for="">Title</label>
   <br />
@@ -6,9 +7,10 @@
   <br />
   <label for="">Description</label>
   <br />
-  <input type="text" minlength="10" maxlength="100" name="description" />
+  <textarea type="text" minlength="10" maxlength="100" name="description" /></textarea>
   <br />
-  <input type="file" accept="image/*" name="image" required />
+  <input type="file" accept="image/*" name="image" id="file" required />
   <br />
   <input type="submit" />
 </form>
+</div>

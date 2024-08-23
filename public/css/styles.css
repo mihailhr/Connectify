@@ -514,17 +514,72 @@ text-transform: none;
 #myAccount {
     width: 100vw;
     background-color: #F6E6CB;
-    min-height: 60vh;
+    min-height: 70vh;
 }
-#myAccount h1{
+#myAccountH{
     background-color: darkolivegreen;
     width: 30vw;
     text-align: center;
     margin: 0 auto;
-    margin-bottom: 4vh;
+    margin-bottom: 2vh;
     border-bottom-left-radius: 2vw;
     border-bottom-right-radius: 2vw;
     color: #F6E6CB;
     padding: 0.5vw;
     text-transform: uppercase;
+}
+#myAccount h2{
+    text-align: center;
+    color: #A0937D;
+    font-weight: 600;
+    font-size: 2.5vw;
+}
+#yourInfo{
+    text-align: center;
+    
+}
+
+
+
+
+#upload{
+    width: 100vw;
+   min-height: 80vh;
+   background-color: #F6E6CB;
+}
+#upload h1{
+    text-align: center;
+    padding: 0.5vw 1vw;
+    text-transform: uppercase;
+    color: #F6E6CB;
+    background-color: darkolivegreen;
+    width: 40vw;
+    margin: 0 auto;
+    border-bottom-left-radius: 2vw;
+    border-bottom-right-radius: 2vw;
+}
+#upload form{
+    display: flex;
+    flex-direction: column;
+    width: 30vw;
+    margin: 3vh auto;
+    align-items: center;
+}
+#upload input{
+    width: 30vw;
+    height: 5vh;
+    border-radius: 2vw;
+    padding: 1vw;
+}
+#upload textarea{
+    max-width: 40vw;
+    width: 30vw;
+    min-width: 20vw;
+    height: 20vh;
+    max-height: 20vh;
+    border-radius: 2vw;
+    padding: 1vw;
+}
+#upload label{
+    font-size: 2vw;
 }
