@@ -267,16 +267,12 @@ footer #miniMenu a{
 
 /* Not finished !!!!! */
 #register{
-    height: 100vh;
+   
     width: 100vw;
     background-color: #F6E6CB;
-    
+    min-height: 77.7vh;
 }
-@media(max-width:1100px){
-    #register{
-        height: 100vw
-    }
-}
+
 #register h1{
     text-align: center;
     padding: 5vh 0;
@@ -306,9 +302,47 @@ footer #miniMenu a{
     padding: 1vh;
     border-radius: 10vw;
     font-size: 1vw;
+    margin-top: 2vh;
 }
 #register label{
     font-size: 3vw;
+    color: #A0937D;
+    font-weight: 600;
+}
+#register button{
+    margin-bottom: 4vh;
+}
+#register #submitInp{
+    font-size: 4vw;
+    border-radius: 10px;
+    padding: 2vw;
+}
+#register p, #register button{
+    font-size: 2vw;
+}
+
+@media(max-width:700px){
+    #register h1{
+        font-size: 8vw;
+    }
+    #register input{
+        font-size: 2vw;
+        margin-top: 1vh;
+        width: 60vw;
+    }
+    #register form{
+        gap: 1.5vh;
+    }
+    #register label{
+        font-size: 5vw;
+    }
+    #register #submitInp{
+        font-size: 4vw;
+        text-align: center;
+    }
+    #register p, #register button{
+        font-size: 4vw;
+    }
 }
 
 input:invalid {
