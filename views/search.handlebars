@@ -6,7 +6,7 @@
 <section id="findUser">
     <form action="/search" method="post">
     <label >Looking for a specific user? Find them!</label><br>
-    <input type="text" name="username" minlength="5" required><br>
+    <input type="text" name="keyword" minlength="5" required><br>
     <button type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
     </form>
 
@@ -14,10 +14,17 @@
 {{#if error}}
 <h3>{{error}}</h3>
 {{else}}
+{{#if resultsUser}}
 <section>
-    <h2>{{results.username}}</h2>
-    <a href="/users/{{results.username}}"><i class="fa-solid fa-user"></i></a>
+    <h2>{{resultsUser.username}}</h2>
+    <a href="/users/{{resultsUser.username}}"><i class="fa-solid fa-user"></i></a>
 </section>
+{{/if}}
+{{#if resultsImage}}
+<h2>{{resultsImage.title}}</h2>
+<h2><a href="/users/{{resultsImage.creator}}"><i class="fa-solid fa-user"></i></a> {{resultsImage.creator}}</h2>
+<img src="/{{resultsImage.filename}}" alt="{{resultsImage.title}}" />
+{{/if}}
 {{/if}}
 
 </div>

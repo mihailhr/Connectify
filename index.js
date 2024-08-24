@@ -148,6 +148,13 @@ app.get("/search",async (req,res)=>{
   res.render("search",{isAuth:req.isAuth})
 })
 
+app.get("/images/:id",async (req,res)=>{
+  const searchedImage=req.params.id
+  const findingImage=await Photo.findOne({title:searchedImage})
+  console.log(findingImage)
+  res.render("imageView",{isAuth:req.isAuth,results:findingImage})
+})
+
 app.post("/register", async (req, res) => {
   if (req.body.password !== req.body.rePass) {
     return res.render("register", { error: "Invalid password confirmation" });
@@ -230,12 +237,23 @@ app.post("/upload", upload.single("image"), async (req, res) => {
 
 app.post("/search", async (req,res)=>{
   try {
-    const searchedUser=req.body.username
-    const findingUser=await User.findOne({username:searchedUser})
-    if(!findingUser){
-      return res.render("search",{isAuth:req.isAuth,error:`User ${searchedUser} doesn't exist`})
+    const searchedUserOrImage=req.body.keyword
+    const findingUser=await User.findOne({username:searchedUserOrImage})
+    const findingImage=await Photo.findOne({title:searchedUserOrImage})
+    if(!findingImage && !findingUser){
+      console.log("case 1")
+      return res.render("search",{isAuth:req.isAuth,error:`User ${searchedUserOrImage} doesn't exist and there aren't any photos with this title yet.`})
     }
-    res.render("search",{isAuth:req.isAuth,results:findingUser})
+    if(!findingUser){
+      console.log("case 2")
+      return res.render("search",{isAuth:req.isAuth,resultsImage:findingImage})
+    }
+    if(!findingImage){
+      console.log("case 3")
+      res.render("search",{isAuth:req.isAuth,resultsUser:findingUser})
+    }
+    res.render("search",{isAuth:req.isAuth,resultsUser:findingUser,resultsImage:findingImage})
+   
   } catch (error) {
     
   }
