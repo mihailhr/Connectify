@@ -143,6 +143,11 @@ app.get("/users/:id",async (req,res)=>{
   res.render("users",{isAuth:req.isAuth,userInfo:userFound,posts})
 })
 
+
+app.get("/search",async (req,res)=>{
+  res.render("search",{isAuth:req.isAuth})
+})
+
 app.post("/register", async (req, res) => {
   if (req.body.password !== req.body.rePass) {
     return res.render("register", { error: "Invalid password confirmation" });
