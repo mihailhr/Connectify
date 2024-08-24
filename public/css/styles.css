@@ -679,3 +679,21 @@ text-transform: none;
     align-self: center;
     height: 70vh;
 }
+
+#search{
+    width: 100vw;
+    background-color: #F6E6CB;
+    min-height: 70vh;
+}
+#search h1{
+    text-align: center;
+    padding: 0.5vw 1vw;
+    text-transform: uppercase;
+    color: #F6E6CB;
+    background-color: darkolivegreen;
+    width: 40vw;
+    font-size: 4vw;
+    margin: 0 auto;
+    border-bottom-left-radius: 2vw;
+    border-bottom-right-radius: 2vw;
+}

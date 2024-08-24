@@ -226,3 +226,17 @@ app.post("/upload", upload.single("image"), async (req, res) => {
     res.status(500).send("Error saving image");
   }
 });
+
+
+app.post("/search", async (req,res)=>{
+  try {
+    const searchedUser=req.body.username
+    const findingUser=await User.findOne({username:searchedUser})
+    if(!findingUser){
+      return res.render("search",{isAuth:req.isAuth,error:`User ${searchedUser} doesn't exist`})
+    }
+    res.render("search",{isAuth:req.isAuth,results:findingUser})
+  } catch (error) {
+    
+  }
+})
