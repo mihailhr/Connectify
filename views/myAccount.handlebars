@@ -6,8 +6,12 @@
 <h2>Welcome, {{user}}!</h2>
 <section id="yourInfo">
     <h1>Your submissions</h1>
-    {{#if photos}}
-
+    {{#if posts}}
+        <ul>
+            {{#each posts}}
+            <li><a href="/images/{{title}}">{{title}}</a></li>
+            {{/each}}
+        </ul>
     {{else}}
     <h1>You have not posted anything yet.</h1>
     {{/if}}

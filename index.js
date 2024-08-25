@@ -92,12 +92,12 @@ app.get("/about", (req, res) => {
   res.render("about", { isAuth: req.isAuth });
 });
 
-app.get("/myAccount", (req, res) => {
+app.get("/myAccount", async (req, res) => {
   if (!req.isAuth) {
     return res.redirect("/");
   }
-  console.log(req.user);
-  res.render("myAccount", { isAuth: req.isAuth, user: req.user });
+  const posts=await Photo.find({creator:req.user})
+  res.render("myAccount", { isAuth: req.isAuth, user: req.user,posts });
 });
 
 app.get("/logOut", (req, res) => {
