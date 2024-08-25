@@ -34,7 +34,8 @@ const PhotoSchema = new mongoose.Schema({
       maxlength: 100,
       required: true
     },
-    creator:{type:String}
+    creator:{type:String},
+    likesList:{type:Array}
   });
 
 const Photo=new mongoose.model("Photo",PhotoSchema)

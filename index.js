@@ -124,7 +124,7 @@ app.get("/upload", (req, res) => {
 app.get("/mainFeed", async (req, res) => {
   try {
     const allImages = await Photo.find();
-
+    
     res.render("mainFeed", { images: allImages, isAuth: req.isAuth });
   } catch (error) {
     res.status(500).send(error);
@@ -151,8 +151,13 @@ app.get("/search",async (req,res)=>{
 app.get("/images/:id",async (req,res)=>{
   const searchedImage=req.params.id
   const findingImage=await Photo.findOne({title:searchedImage})
+  const isAuthor=findingImage.creator==req.user
+  console.log(isAuthor)
   console.log(findingImage)
-  res.render("imageView",{isAuth:req.isAuth,results:findingImage})
+  if(!req.isAuth){
+    return res.render("imageView",{isAuth:req.isAuth,results:findingImage})
+  }
+  res.render("imageView",{isAuth:req.isAuth,results:findingImage,isAuthor})
 })
 
 app.post("/register", async (req, res) => {
@@ -224,6 +229,7 @@ app.post("/upload", upload.single("image"), async (req, res) => {
     description: req.body.description,
     title: req.body.title,
     creator: req.user,
+    likesList:[]
   });
 
   try {
@@ -256,5 +262,22 @@ app.post("/search", async (req,res)=>{
    
   } catch (error) {
     
+  }
+})
+
+
+app.post("/images/:id",async (req,res)=>{
+  if(!req.isAuth){
+    return res.redirect("mainFeed")
+
+  }
+  try {
+    const image=await Photo.findOne({title:req.params.id})
+    image.likesList.push(req.user)
+    console.log(image.likesList)
+    await image.save()
+    res.redirect("/images/"+req.params.id)
+  } catch (error) {
+    console.log(error)
   }
 })

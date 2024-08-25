@@ -2,4 +2,15 @@
 <h1>{{results.title}}</h1>
 <h2><a href="/users/{{results.creator}}"><i class="fa-solid fa-user"></i></a> {{results.creator}}</h2>
 <img src="/{{results.filename}}" alt="{{results.title}}" />
+{{#if isAuth}}
+{{#if isAuthor}}
+<button>Edit</button>
+<button>Delete</button>
+{{else}}
+<form action="/images/{{results.title}}" method="post">
+<button type="submit">Like</button>
+</form>
+
+{{/if}}
+{{/if}}
 </div>
