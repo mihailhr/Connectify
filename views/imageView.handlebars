@@ -7,9 +7,17 @@
 <button>Edit</button>
 <button>Delete</button>
 {{else}}
+
+{{#if hasLiked}}
 <form action="/images/{{results.title}}" method="post">
-<button type="submit">Like</button>
+<button type="submit"><i id="unlike" class="fa-regular fa-heart"></i></button>
 </form>
+
+{{else}}
+<form action="/images/{{results.title}}" method="post">
+<button type="submit"><i id="like" class="fa-regular fa-heart"></i></button>
+</form>
+{{/if}}
 
 {{/if}}
 {{/if}}

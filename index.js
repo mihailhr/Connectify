@@ -152,12 +152,11 @@ app.get("/images/:id",async (req,res)=>{
   const searchedImage=req.params.id
   const findingImage=await Photo.findOne({title:searchedImage})
   const isAuthor=findingImage.creator==req.user
-  console.log(isAuthor)
-  console.log(findingImage)
+  const hasLiked=findingImage.likesList.includes(req.user)
   if(!req.isAuth){
     return res.render("imageView",{isAuth:req.isAuth,results:findingImage})
   }
-  res.render("imageView",{isAuth:req.isAuth,results:findingImage,isAuthor})
+  res.render("imageView",{isAuth:req.isAuth,results:findingImage,isAuthor,hasLiked})
 })
 
 app.post("/register", async (req, res) => {
@@ -273,9 +272,16 @@ app.post("/images/:id",async (req,res)=>{
   }
   try {
     const image=await Photo.findOne({title:req.params.id})
-    image.likesList.push(req.user)
+    if(image.likesList.includes(req.user)){
+      const indexToDel=image.likesList.indexOf(req.user)
+      image.likesList.splice(indexToDel,1)
+      await image.save()
+    }else{
+      image.likesList.push(req.user)
     console.log(image.likesList)
     await image.save()
+    }
+    
     res.redirect("/images/"+req.params.id)
   } catch (error) {
     console.log(error)

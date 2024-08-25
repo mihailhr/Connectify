@@ -697,3 +697,12 @@ text-transform: none;
     border-bottom-left-radius: 2vw;
     border-bottom-right-radius: 2vw;
 }
+
+
+#like{
+
+}
+#unlike{
+    color: darkolivegreen;
+    background-color: darkolivegreen;
+}
