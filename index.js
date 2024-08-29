@@ -16,7 +16,7 @@ const { error } = require("console");
 require("dotenv").config();
 
 const uri = process.env.URI;
-
+const PORT = process.env.PORT || 3000;
 const secret = process.env.secret;
 
 const app = express();
@@ -43,7 +43,7 @@ mongoose
   .connect(uri)
   .then(() => {
     console.log("Connected to MongoDB via Mongoose");
-    app.listen(3000, () => {
+    app.listen(PORT, () => {
       console.log("Server is running on port 3000");
     });
   })
