@@ -12,6 +12,7 @@ const multer = require("multer");
 const fs = require("fs");
 const Photo = require("./Mongoose models/photo");
 const { error } = require("console");
+
 require("dotenv").config();
 
 const uri = process.env.URI;
@@ -24,6 +25,7 @@ app.use(express.static(path.join(__dirname, "uploads")));
 app.use(bodyParser.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(authenticateToken);
+
 
 app.engine(
   "handlebars",
@@ -71,7 +73,8 @@ const storage = multer.diskStorage({
 const upload = multer({ storage });
 
 app.get("/", (req, res) => {
-  console.log(req.isAuth);
+  
+
   if(req.isAuth){
     return res.redirect("/mainFeed");
   }
@@ -320,6 +323,16 @@ app.post("/mainFeed",async (req,res)=>{
       return res.status(500).send(error);
     }
   }
+  if(req.body.sort=="newest"){
+    try {
+      let allImages = await Photo.find();
+     
+      
+      return res.render("mainFeed", { images: allImages, isAuth: req.isAuth });
+    } catch (error) {
+      return res.status(500).send(error);
+    }
+  }
 
 })
 
@@ -340,3 +353,7 @@ app.post("/users/:id", async (req,res)=>{
   return res.redirect("/users/"+req.params.id)
 
 })
+
+
+
+// Fix filtering by people you follow!!!!

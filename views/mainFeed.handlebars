@@ -2,17 +2,30 @@
   <h1>Main feed</h1>
 
   {{#if images}}
-  <form action="/mainFeed" method="post">
-  <label for=""> Sort and filter</label>
-  <select name="sort" id="">
-  <option value="mostLiked" selected>Most liked</option>
-  <option value="oldest">Oldest posts</option>
 
-  
-  
-  </select>
-  <button type="submit">Submit</button>
-  </form>
+    {{#if isAuth}}
+    <form action="/mainFeed" method="post">
+      <label for=""> Sort and filter</label>
+      <select name="sort" id="">
+        <option value="newest" selected>Newest</option>
+        <option value="mostLiked">Most liked</option>
+        <option value="oldest">Oldest posts</option>
+        <option value="followers">Posted by the people you follow</option>
+      </select>
+      <button type="submit">Submit</button>
+    </form>
+    {{else}}
+    <form action="/mainFeed" method="post">
+      <label for=""> Sort and filter</label>
+      <select name="sort" id="">
+        <option value="newest" selected>Newest</option>
+        <option value="mostLiked">Most liked</option>
+        <option value="oldest">Oldest posts</option>
+
+      </select>
+      <button type="submit">Submit</button>
+    </form>
+    {{/if}}
     <ul>
       {{#each images}}
         <li id="image">
@@ -22,8 +35,11 @@
           <p>Number of
             <i class="fa-regular fa-heart"></i>:
             {{likesList.length}}</p>
-           
-          <a href="/images/{{title}}"><img src="/{{filename}}" alt="{{title}}" /></a>
+
+          <a href="/images/{{title}}"><img
+              src="/{{filename}}"
+              alt="{{title}}"
+            /></a>
 
         </li>
       {{/each}}
