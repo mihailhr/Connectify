@@ -16,6 +16,7 @@ const { error } = require("console");
 require("dotenv").config();
 
 const uri = process.env.URI;
+
 const secret = process.env.secret;
 
 const app = express();
