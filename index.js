@@ -26,7 +26,6 @@ app.use(bodyParser.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(authenticateToken);
 
-
 app.engine(
   "handlebars",
   handlebars.engine({
@@ -73,9 +72,7 @@ const storage = multer.diskStorage({
 const upload = multer({ storage });
 
 app.get("/", (req, res) => {
-  
-
-  if(req.isAuth){
+  if (req.isAuth) {
     return res.redirect("/mainFeed");
   }
   return res.render("home", { isAuth: req.isAuth });
@@ -99,8 +96,8 @@ app.get("/myAccount", async (req, res) => {
   if (!req.isAuth) {
     return res.redirect("/");
   }
-  const posts=await Photo.find({creator:req.user})
-  res.render("myAccount", { isAuth: req.isAuth, user: req.user,posts });
+  const posts = await Photo.find({ creator: req.user });
+  res.render("myAccount", { isAuth: req.isAuth, user: req.user, posts });
 });
 
 app.get("/logOut", (req, res) => {
@@ -127,50 +124,62 @@ app.get("/upload", (req, res) => {
 app.get("/mainFeed", async (req, res) => {
   try {
     let allImages = await Photo.find();
-    allImages=allImages.reverse()
-    
+    allImages = allImages.reverse();
+
     res.render("mainFeed", { images: allImages, isAuth: req.isAuth });
   } catch (error) {
     res.status(500).send(error);
   }
 });
 
+app.get("/users/:id", async (req, res) => {
+  const userFound = await User.findOne({ username: req.params.id });
 
-app.get("/users/:id",async (req,res)=>{
-  const userFound=await User.findOne({username:req.params.id})
- 
-  if(!userFound){
-    
-
-    return res.render("users",{isAuth:req.isAuth,error:"User not found"})
+  if (!userFound) {
+    return res.render("users", { isAuth: req.isAuth, error: "User not found" });
   }
-  let isFollowing
-  const mainUser=await User.findOne({username:req.user})
-  
-  if(req.isAuth && mainUser.followedUsers.find((e)=>e.username===req.params.id)){
-    isFollowing=true
-  }else{
-    isFollowing=false
+  let isFollowing;
+  const mainUser = await User.findOne({ username: req.user });
+
+  if (
+    req.isAuth &&
+    mainUser.followedUsers.find((e) => e.username === req.params.id)
+  ) {
+    isFollowing = true;
+  } else {
+    isFollowing = false;
   }
-  const posts=await Photo.find({creator:req.params.id})
-  res.render("users",{isAuth:req.isAuth,userInfo:userFound,posts,isFollowing})
-})
+  const posts = await Photo.find({ creator: req.params.id });
+  res.render("users", {
+    isAuth: req.isAuth,
+    userInfo: userFound,
+    posts,
+    isFollowing,
+  });
+});
 
+app.get("/search", async (req, res) => {
+  res.render("search", { isAuth: req.isAuth });
+});
 
-app.get("/search",async (req,res)=>{
-  res.render("search",{isAuth:req.isAuth})
-})
-
-app.get("/images/:id",async (req,res)=>{
-  const searchedImage=req.params.id
-  const findingImage=await Photo.findOne({title:searchedImage})
-  const isAuthor=findingImage.creator==req.user
-  const hasLiked=findingImage.likesList.includes(req.user)
-  if(!req.isAuth){
-    return res.render("imageView",{isAuth:req.isAuth,results:findingImage})
+app.get("/images/:id", async (req, res) => {
+  const searchedImage = req.params.id;
+  const findingImage = await Photo.findOne({ title: searchedImage });
+  const isAuthor = findingImage.creator == req.user;
+  const hasLiked = findingImage.likesList.includes(req.user);
+  if (!req.isAuth) {
+    return res.render("imageView", {
+      isAuth: req.isAuth,
+      results: findingImage,
+    });
   }
-  res.render("imageView",{isAuth:req.isAuth,results:findingImage,isAuthor,hasLiked})
-})
+  res.render("imageView", {
+    isAuth: req.isAuth,
+    results: findingImage,
+    isAuthor,
+    hasLiked,
+  });
+});
 
 app.post("/register", async (req, res) => {
   if (req.body.password !== req.body.rePass) {
@@ -178,13 +187,17 @@ app.post("/register", async (req, res) => {
   }
 
   try {
-    const usernameTaken=await User.findOne({username:req.body.username})
-    const emailTaken=await User.findOne({email:req.body.email})
-    if(usernameTaken){
-      return res.render("register", { error: "This username is already being used." });
+    const usernameTaken = await User.findOne({ username: req.body.username });
+    const emailTaken = await User.findOne({ email: req.body.email });
+    if (usernameTaken) {
+      return res.render("register", {
+        error: "This username is already being used.",
+      });
     }
-    if(emailTaken){
-      return res.render("register", { error: "This email is already being used." });
+    if (emailTaken) {
+      return res.render("register", {
+        error: "This email is already being used.",
+      });
     }
     const hashedPass = await bcrypt.hash(req.body.password, 10);
     req.body.password = hashedPass;
@@ -226,7 +239,7 @@ app.post("/", async (req, res) => {
     res.cookie("token", token);
 
     console.log(3);
-    return res.status(200).redirect("/mainFeed")
+    return res.status(200).redirect("/mainFeed");
   } catch (error) {
     return res.render("/", { isAuth: req.isAuth, error: error });
   }
@@ -241,7 +254,7 @@ app.post("/upload", upload.single("image"), async (req, res) => {
     description: req.body.description,
     title: req.body.title,
     creator: req.user,
-    likesList:[]
+    likesList: [],
   });
 
   try {
@@ -252,108 +265,132 @@ app.post("/upload", upload.single("image"), async (req, res) => {
   }
 });
 
-
-app.post("/search", async (req,res)=>{
+app.post("/search", async (req, res) => {
   try {
-    const searchedUserOrImage=req.body.keyword
-    const findingUser=await User.findOne({username:searchedUserOrImage})
-    const findingImage=await Photo.findOne({title:searchedUserOrImage})
-    if(!findingImage && !findingUser){
-      console.log("case 1")
-      return res.render("search",{isAuth:req.isAuth,error:`User ${searchedUserOrImage} doesn't exist and there aren't any photos with this title yet.`})
+    const searchedUserOrImage = req.body.keyword;
+    const findingUser = await User.findOne({ username: searchedUserOrImage });
+    const findingImage = await Photo.findOne({ title: searchedUserOrImage });
+    if (!findingImage && !findingUser) {
+      console.log("case 1");
+      return res.render("search", {
+        isAuth: req.isAuth,
+        error: `User ${searchedUserOrImage} doesn't exist and there aren't any photos with this title yet.`,
+      });
     }
-    if(!findingUser){
-      console.log("case 2")
-      return res.render("search",{isAuth:req.isAuth,resultsImage:findingImage})
+    if (!findingUser) {
+      console.log("case 2");
+      return res.render("search", {
+        isAuth: req.isAuth,
+        resultsImage: findingImage,
+      });
     }
-    if(!findingImage){
-      console.log("case 3")
-      res.render("search",{isAuth:req.isAuth,resultsUser:findingUser})
+    if (!findingImage) {
+      console.log("case 3");
+      res.render("search", { isAuth: req.isAuth, resultsUser: findingUser });
     }
-    res.render("search",{isAuth:req.isAuth,resultsUser:findingUser,resultsImage:findingImage})
-   
-  } catch (error) {
-    
-  }
-})
+    res.render("search", {
+      isAuth: req.isAuth,
+      resultsUser: findingUser,
+      resultsImage: findingImage,
+    });
+  } catch (error) {}
+});
 
-
-app.post("/images/:id",async (req,res)=>{
-  if(!req.isAuth){
-    return res.redirect("mainFeed")
-
+app.post("/images/:id", async (req, res) => {
+  if (!req.isAuth) {
+    return res.redirect("mainFeed");
   }
   try {
-    const image=await Photo.findOne({title:req.params.id})
-    if(image.likesList.includes(req.user)){
-      const indexToDel=image.likesList.indexOf(req.user)
-      image.likesList.splice(indexToDel,1)
-      await image.save()
-    }else{
-      image.likesList.push(req.user)
-    console.log(image.likesList)
-    await image.save()
+    const image = await Photo.findOne({ title: req.params.id });
+    if (image.likesList.includes(req.user)) {
+      const indexToDel = image.likesList.indexOf(req.user);
+      image.likesList.splice(indexToDel, 1);
+      await image.save();
+    } else {
+      image.likesList.push(req.user);
+      console.log(image.likesList);
+      await image.save();
     }
-    
-    res.redirect("/images/"+req.params.id)
+
+    res.redirect("/images/" + req.params.id);
   } catch (error) {
-    console.log(error)
+    console.log(error);
   }
-})
+});
 
-
-app.post("/mainFeed",async (req,res)=>{
-  if(req.body.sort=="oldest"){
+app.post("/mainFeed", async (req, res) => {
+  if (req.body.sort == "oldest") {
     try {
       let allImages = await Photo.find();
-      
-      
+
       return res.render("mainFeed", { images: allImages, isAuth: req.isAuth });
     } catch (error) {
       return res.status(500).send(error);
     }
   }
-  if(req.body.sort=="mostLiked"){
+  if (req.body.sort == "mostLiked") {
     try {
       let allImages = await Photo.find();
-      allImages=allImages.sort((a,b)=>b.likesList.length-a.likesList.length)
-      
+      allImages = allImages.sort(
+        (a, b) => b.likesList.length - a.likesList.length
+      );
+
       return res.render("mainFeed", { images: allImages, isAuth: req.isAuth });
     } catch (error) {
       return res.status(500).send(error);
     }
   }
-  if(req.body.sort=="newest"){
+  if (req.body.sort == "newest") {
     try {
       let allImages = await Photo.find();
-     
-      
+      allImages=allImages.reverse()
       return res.render("mainFeed", { images: allImages, isAuth: req.isAuth });
     } catch (error) {
       return res.status(500).send(error);
     }
   }
+  if (req.body.sort == "followers") {
+    console.log("reached");
+    try {
+      const mainUser = await User.findOne({ username: req.user });
+      const creators = mainUser.followedUsers;
+      let allImages = [];
+      for (let element of creators) {
+        const foundImageByAuthor = await Photo.find({
+          creator: element.username,
+        });
+        if (foundImageByAuthor) {
+          for (let image of foundImageByAuthor) {
+            allImages.push(image);
+          }
+        }
+      }
+      console.log(allImages);
 
-})
-
-
-app.post("/users/:id", async (req,res)=>{
-  if(!req.isAuth){
-    return res.send("You need to be logged in to follow users")
+      return res.render("mainFeed", { images: allImages, isAuth: req.isAuth });
+    } catch (error) {
+      return res.status(500).send(error);
+    }
   }
-  const mainUser=await User.findOne({username:req.user})
-  if(mainUser.followedUsers.find((e)=>e.username==req.params.id)){
-    console.log("here")
-    const indexToDel=mainUser.followedUsers.indexOf({username:req.params.id})
-    mainUser.followedUsers.splice(indexToDel,1)
-  }else{
-    mainUser.followedUsers.push({username:req.params.id})
+});
+
+app.post("/users/:id", async (req, res) => {
+  if (!req.isAuth) {
+    return res.send("You need to be logged in to follow users");
   }
-  await mainUser.save()
-  return res.redirect("/users/"+req.params.id)
+  const mainUser = await User.findOne({ username: req.user });
+  if (mainUser.followedUsers.find((e) => e.username == req.params.id)) {
+    console.log("here");
+    const indexToDel = mainUser.followedUsers.indexOf({
+      username: req.params.id,
+    });
+    mainUser.followedUsers.splice(indexToDel, 1);
+  } else {
+    mainUser.followedUsers.push({ username: req.params.id });
+    console.log({ username: req.params.id });
+  }
+  await mainUser.save();
+  return res.redirect("/users/" + req.params.id);
+});
 
-})
 
-
-
-// Fix filtering by people you follow!!!!
