@@ -13,6 +13,7 @@ const fs = require("fs");
 const Photo = require("./Mongoose models/photo");
 const { error } = require("console");
 
+
 require("dotenv").config();
 
 const uri = process.env.URI;
@@ -57,20 +58,10 @@ process.on("SIGINT", async () => {
   console.log("Mongoose connection closed due to application termination");
   process.exit(0);
 });
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    const uploadPath = path.join(__dirname, "uploads");
-    if (!fs.existsSync(uploadPath)) {
-      fs.mkdirSync(uploadPath, { recursive: true });
-    }
-    cb(null, uploadPath);
-  },
-  filename: (req, file, cb) => {
-    cb(null, `${Date.now()}-${file.originalname}`);
-  },
-});
 
+const storage = multer.memoryStorage();
 const upload = multer({ storage });
+
 
 app.get("/", (req, res) => {
   if (req.isAuth) {
@@ -126,7 +117,12 @@ app.get("/mainFeed", async (req, res) => {
   try {
     let allImages = await Photo.find();
     allImages = allImages.reverse();
-
+    console.log(allImages)
+    for(let element of allImages){
+      const buffer=Buffer.from(element.data, 'base64')
+      const finalBuffer=buffer.toString("base64")
+      element.img=finalBuffer
+    }
     res.render("mainFeed", { images: allImages, isAuth: req.isAuth });
   } catch (error) {
     res.status(500).send(error);
@@ -151,6 +147,11 @@ app.get("/users/:id", async (req, res) => {
     isFollowing = false;
   }
   const posts = await Photo.find({ creator: req.params.id });
+  for(let element of posts){
+    const buffer=Buffer.from(element.data, 'base64')
+      const finalBuffer=buffer.toString("base64")
+      element.img=finalBuffer
+  }
   res.render("users", {
     isAuth: req.isAuth,
     userInfo: userFound,
@@ -169,10 +170,12 @@ app.get("/images/:id", async (req, res) => {
   const findingImage = await Photo.findOne({ title: searchedImage });
   const isAuthor = findingImage.creator == req.user;
   const hasLiked = findingImage.likesList.includes(req.user);
+  const buffer=Buffer.from(findingImage.data, 'base64')
   if (!req.isAuth) {
     return res.render("imageView", {
       isAuth: req.isAuth,
       results: findingImage,
+      buffer:buffer.toString("base64")
     });
   }
   res.render("imageView", {
@@ -180,6 +183,7 @@ app.get("/images/:id", async (req, res) => {
     results: findingImage,
     isAuthor,
     hasLiked,
+    buffer:buffer.toString("base64")
   });
 });
 
@@ -247,23 +251,31 @@ app.post("/", async (req, res) => {
   }
 });
 
-app.post("/upload", upload.single("image"), async (req, res) => {
+app.post('/upload', upload.single('image'), async (req, res) => {
+  if (!req.file) {
+    return res.status(400).send('No file uploaded');
+  }
+  if(!req.isAuth){
+    return res.redirect("/register")
+  }
+
   const newImage = new Photo({
-    filename: req.file.filename,
-    path: req.file.path,
+    filename: req.file.originalname, 
     contentType: req.file.mimetype,
+    data: req.file.buffer,
     originalName: req.file.originalname,
     description: req.body.description,
     title: req.body.title,
     creator: req.user,
-    likesList: [],
+    likesList: []
   });
 
   try {
     await newImage.save();
-    res.redirect("/mainFeed");
+    res.redirect('/mainFeed');
   } catch (err) {
-    res.status(500).send("Error saving image");
+    console.error('Error saving image:', err);
+    res.status(500).send('Error saving image');
   }
 });
 
@@ -271,7 +283,12 @@ app.post("/search", async (req, res) => {
   try {
     const searchedUserOrImage = req.body.keyword;
     const findingUser = await User.findOne({ username: searchedUserOrImage });
-    const findingImage = await Photo.findOne({ title: searchedUserOrImage });
+    let findingImage = await Photo.findOne({ title: searchedUserOrImage });
+    if(findingImage){
+      const buffer=Buffer.from(findingImage.data, 'base64')
+      const finalBuffer=buffer.toString("base64")
+      findingImage.img=finalBuffer
+    }
     if (!findingImage && !findingUser) {
       console.log("case 1");
       return res.render("search", {
@@ -281,6 +298,7 @@ app.post("/search", async (req, res) => {
     }
     if (!findingUser) {
       console.log("case 2");
+      
       return res.render("search", {
         isAuth: req.isAuth,
         resultsImage: findingImage,
@@ -290,6 +308,7 @@ app.post("/search", async (req, res) => {
       console.log("case 3");
       res.render("search", { isAuth: req.isAuth, resultsUser: findingUser });
     }
+    
     res.render("search", {
       isAuth: req.isAuth,
       resultsUser: findingUser,
@@ -324,7 +343,13 @@ app.post("/mainFeed", async (req, res) => {
   if (req.body.sort == "oldest") {
     try {
       let allImages = await Photo.find();
-
+      for(let element of allImages){
+        
+          const buffer=Buffer.from(element.data, 'base64')
+          const finalBuffer=buffer.toString("base64")
+          element.img=finalBuffer
+        
+      }
       return res.render("mainFeed", { images: allImages, isAuth: req.isAuth });
     } catch (error) {
       return res.status(500).send(error);
@@ -336,7 +361,13 @@ app.post("/mainFeed", async (req, res) => {
       allImages = allImages.sort(
         (a, b) => b.likesList.length - a.likesList.length
       );
-
+      for(let element of allImages){
+        
+        const buffer=Buffer.from(element.data, 'base64')
+        const finalBuffer=buffer.toString("base64")
+        element.img=finalBuffer
+      
+    }
       return res.render("mainFeed", { images: allImages, isAuth: req.isAuth });
     } catch (error) {
       return res.status(500).send(error);
@@ -346,6 +377,13 @@ app.post("/mainFeed", async (req, res) => {
     try {
       let allImages = await Photo.find();
       allImages=allImages.reverse()
+      for(let element of allImages){
+        
+        const buffer=Buffer.from(element.data, 'base64')
+        const finalBuffer=buffer.toString("base64")
+        element.img=finalBuffer
+      
+    }
       return res.render("mainFeed", { images: allImages, isAuth: req.isAuth });
     } catch (error) {
       return res.status(500).send(error);
@@ -367,6 +405,13 @@ app.post("/mainFeed", async (req, res) => {
           }
         }
       }
+      for(let element of allImages){
+        
+        const buffer=Buffer.from(element.data, 'base64')
+        const finalBuffer=buffer.toString("base64")
+        element.img=finalBuffer
+      
+    }
       console.log(allImages);
 
       return res.render("mainFeed", { images: allImages, isAuth: req.isAuth });
