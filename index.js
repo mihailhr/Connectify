@@ -140,7 +140,7 @@ app.get("/users/:id", async (req, res) => {
   }
   let isFollowing;
   const mainUser = await User.findOne({ username: req.user });
-
+  let isUser=req.user==req.params.id
   if (
     req.isAuth &&
     mainUser.followedUsers.find((e) => e.username === req.params.id)
@@ -155,6 +155,7 @@ app.get("/users/:id", async (req, res) => {
     userInfo: userFound,
     posts,
     isFollowing,
+    isUser
   });
 });
 
@@ -377,6 +378,9 @@ app.post("/mainFeed", async (req, res) => {
 app.post("/users/:id", async (req, res) => {
   if (!req.isAuth) {
     return res.send("You need to be logged in to follow users");
+  }
+  if(req.user===req.params.id){
+    return res.send("You cannot file yourself")
   }
   const mainUser = await User.findOne({ username: req.user });
   if (mainUser.followedUsers.find((e) => e.username == req.params.id)) {
