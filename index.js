@@ -123,7 +123,8 @@ app.get("/upload", (req, res) => {
 
 app.get("/mainFeed", async (req, res) => {
   try {
-    const allImages = await Photo.find();
+    let allImages = await Photo.find();
+    allImages=allImages.reverse()
     
     res.render("mainFeed", { images: allImages, isAuth: req.isAuth });
   } catch (error) {
@@ -134,13 +135,22 @@ app.get("/mainFeed", async (req, res) => {
 
 app.get("/users/:id",async (req,res)=>{
   const userFound=await User.findOne({username:req.params.id})
+ 
   if(!userFound){
     
 
     return res.render("users",{isAuth:req.isAuth,error:"User not found"})
   }
+  let isFollowing
+  const mainUser=await User.findOne({username:req.user})
+  
+  if(req.isAuth && mainUser.followedUsers.find((e)=>e.username===req.params.id)){
+    isFollowing=true
+  }else{
+    isFollowing=false
+  }
   const posts=await Photo.find({creator:req.params.id})
-  res.render("users",{isAuth:req.isAuth,userInfo:userFound,posts})
+  res.render("users",{isAuth:req.isAuth,userInfo:userFound,posts,isFollowing})
 })
 
 
@@ -286,4 +296,47 @@ app.post("/images/:id",async (req,res)=>{
   } catch (error) {
     console.log(error)
   }
+})
+
+
+app.post("/mainFeed",async (req,res)=>{
+  if(req.body.sort=="oldest"){
+    try {
+      let allImages = await Photo.find();
+      
+      
+      return res.render("mainFeed", { images: allImages, isAuth: req.isAuth });
+    } catch (error) {
+      return res.status(500).send(error);
+    }
+  }
+  if(req.body.sort=="mostLiked"){
+    try {
+      let allImages = await Photo.find();
+      allImages=allImages.sort((a,b)=>b.likesList.length-a.likesList.length)
+      
+      return res.render("mainFeed", { images: allImages, isAuth: req.isAuth });
+    } catch (error) {
+      return res.status(500).send(error);
+    }
+  }
+
+})
+
+
+app.post("/users/:id", async (req,res)=>{
+  if(!req.isAuth){
+    return res.send("You need to be logged in to follow users")
+  }
+  const mainUser=await User.findOne({username:req.user})
+  if(mainUser.followedUsers.find((e)=>e.username==req.params.id)){
+    console.log("here")
+    const indexToDel=mainUser.followedUsers.indexOf({username:req.params.id})
+    mainUser.followedUsers.splice(indexToDel,1)
+  }else{
+    mainUser.followedUsers.push({username:req.params.id})
+  }
+  await mainUser.save()
+  return res.redirect("/users/"+req.params.id)
+
 })

@@ -6,6 +6,22 @@
   <h1 id="contact">Contact {{userInfo.username}} <a
                     href="https://mail.google.com/mail/?view=cm&fs=1&to={{userInfo.email}}&su=Subject%20Here&body=Your%20message%20here"
                     target="_blank"><i class="fa-regular fa-envelope"></i></a></h1>
+
+  {{#if isAuth}}
+  {{#if isFollowing}}
+  <form action="/users/{{userInfo.username}}"   method="post">
+    <button type="submit">Unfollow {{userInfo.username}}</button>
+  </form>
+
+  {{else}}
+  <form action="/users/{{userInfo.username}}"  method="post">
+   <button type="submit">Follow {{userInfo.username}}</button>
+  </form>
+  
+  {{/if}}
+  {{else}}
+  <h3>Log in to follow {{userInfo.username}}</h3>
+  {{/if}}
   <h1>Posts:</h1>
 
   {{#if posts.length}}

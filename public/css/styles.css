@@ -389,6 +389,18 @@ input:valid{
     background-color: #F6E6CB;
     min-height: 70vh;
 }
+#sortMenu{
+    
+    display: none;
+    flex-direction: column;
+}
+#sort:hover #sortMenu{
+    display: flex;
+}
+#sort{
+    margin: 3vw auto;
+    text-align: center;
+}
 
 #mainFeed h1{
     

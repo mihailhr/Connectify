@@ -1,21 +1,35 @@
-
 <div id="mainFeed">
-<h1>Main feed</h1>
+  <h1>Main feed</h1>
 
-{{#if images}}
-  <ul>
-    {{#each images}}
-      <li id="image">
-         <a href="/users/{{creator}}"><i class="fa-solid fa-user"></i> {{creator}}</a>
-        <a href="/images/{{title}}"><h2>{{title}}</h2></a>
-        <p>Number of <i class="fa-regular fa-heart"></i>: {{likesList.length}}</p>
-        <img src="/{{filename}}" alt="{{title}}" />
-       
-      </li>
-    {{/each}}
-  </ul>
-  <p id="filler"></p>
-{{else}}
-  <p>No images have been posted yet.</p>
-{{/if}}
+  {{#if images}}
+  <form action="/mainFeed" method="post">
+  <label for=""> Sort and filter</label>
+  <select name="sort" id="">
+  <option value="mostLiked" selected>Most liked</option>
+  <option value="oldest">Oldest posts</option>
+
+  
+  
+  </select>
+  <button type="submit">Submit</button>
+  </form>
+    <ul>
+      {{#each images}}
+        <li id="image">
+          <a href="/users/{{creator}}"><i class="fa-solid fa-user"></i>
+            {{creator}}</a>
+          <a href="/images/{{title}}"><h2>{{title}}</h2></a>
+          <p>Number of
+            <i class="fa-regular fa-heart"></i>:
+            {{likesList.length}}</p>
+           
+          <a href="/images/{{title}}"><img src="/{{filename}}" alt="{{title}}" /></a>
+
+        </li>
+      {{/each}}
+    </ul>
+    <p id="filler"></p>
+  {{else}}
+    <p>No images have been posted yet.</p>
+  {{/if}}
 </div>
