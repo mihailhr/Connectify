@@ -466,8 +466,8 @@ input:valid{
     margin-bottom: 1vh;
 }
 #mainFeed img:hover{
-    filter:saturate(200%) ;
-    filter: brightness(130%);
+    filter:saturate(200%) drop-shadow(5px 5px 5px #000);
+    
 }
 #filler{
     width: 100vw;

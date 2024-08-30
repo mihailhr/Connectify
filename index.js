@@ -12,7 +12,7 @@ const multer = require("multer");
 const fs = require("fs");
 const Photo = require("./Mongoose models/photo");
 const { error } = require("console");
-
+const sharp=require("sharp")
 
 
 require("dotenv").config();
@@ -269,10 +269,27 @@ app.post('/upload', upload.single('image'), async (req, res) => {
     return res.redirect("/register")
   }
 
+  const metadata = await sharp(req.file.buffer).metadata();
+
+    let processedImageBuffer;
+
+    if (metadata.width > 1200 || metadata.height > 1200) {
+      
+      processedImageBuffer = await sharp(req.file.buffer)
+        .resize(1200)
+        .jpeg({ quality: 80 }) 
+        .toBuffer();
+    } else {
+      
+      processedImageBuffer = await sharp(req.file.buffer)
+        .jpeg({ quality: 80 }) 
+        .toBuffer();
+    }
+
   const newImage = new Photo({
     filename: req.file.originalname, 
     contentType: req.file.mimetype,
-    data: req.file.buffer,
+    data: processedImageBuffer,
     originalName: req.file.originalname,
     description: req.body.description,
     title: req.body.title,
