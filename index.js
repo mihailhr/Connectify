@@ -292,8 +292,9 @@ app.post('/upload', upload.single('image'), async (req, res) => {
 app.post("/search", async (req, res) => {
   try {
     const searchedUserOrImage = req.body.keyword;
-    const findingUser = await User.findOne({ username: searchedUserOrImage });
+    const findingUser = await User.find({ username: searchedUserOrImage });
     let findingImage = await Photo.findOne({ title: searchedUserOrImage });
+    console.log(findingUser)
     if(findingImage){
       const buffer=Buffer.from(findingImage.data, 'base64')
       const finalBuffer=buffer.toString("base64")

@@ -342,6 +342,8 @@ footer #miniMenu a{
 }
 #register button{
     margin-bottom: 4vh;
+    background-color: transparent;
+    border: 3px solid darkolivegreen
 }
 #register #submitInp{
     font-size: 4vw;
@@ -765,6 +767,12 @@ text-transform: none;
 }
 #search label{
     font-size: 2vw;
+}
+
+#search #resultsImage{
+    display: flex;
+    flex-direction: column;
+    text-align: center;
 }
 
 

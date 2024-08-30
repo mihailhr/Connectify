@@ -15,15 +15,18 @@
 <h3>{{error}}</h3>
 {{else}}
 {{#if resultsUser}}
-<section>
-    <h2>{{resultsUser.username}}</h2>
-    <a href="/users/{{resultsUser.username}}"><i class="fa-solid fa-user"></i></a>
+<section id="resultsUser">
+    {{#each resultsUser}}
+    <h2>{{username}}</h2>
+    <a href="/users/{{username}}"><i class="fa-solid fa-user"></i></a>
+    {{/each}}
 </section>
 {{/if}}
 {{#if resultsImage}}
-<a href="/images/{{resultsImage.title}}"><h2>{{resultsImage.title}}</h2></a>
+<section id="resultsImage"><a href="/images/{{resultsImage.title}}"><h2>{{resultsImage.title}}</h2></a>
 <h2><a href="/users/{{resultsImage.creator}}"><i class="fa-solid fa-user"></i></a> {{resultsImage.creator}}</h2>
-<a href="/images/{{resultsImage.title}}"><img src="data:image/jpeg;base64,{{resultsImage.img}}" alt="{{resultsImage.title}}" /></a>
+<a href="/images/{{resultsImage.title}}"><img src="data:image/jpeg;base64,{{resultsImage.img}}" alt="{{resultsImage.title}}" /></a></section>
+
 {{/if}}
 {{/if}}
 
