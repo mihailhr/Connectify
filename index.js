@@ -117,7 +117,7 @@ app.get("/mainFeed", async (req, res) => {
   try {
     let allImages = await Photo.find();
     allImages = allImages.reverse();
-    console.log(allImages)
+   
     for(let element of allImages){
       const buffer=Buffer.from(element.data, 'base64')
       const finalBuffer=buffer.toString("base64")

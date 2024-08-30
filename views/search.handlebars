@@ -21,9 +21,9 @@
 </section>
 {{/if}}
 {{#if resultsImage}}
-<h2>{{resultsImage.title}}</h2>
+<a href="/images/{{resultsImage.title}}"><h2>{{resultsImage.title}}</h2></a>
 <h2><a href="/users/{{resultsImage.creator}}"><i class="fa-solid fa-user"></i></a> {{resultsImage.creator}}</h2>
-<img src="data:image/jpeg;base64,{{resultsImage.img}}" alt="{{resultsImage.title}}" />
+<a href="/images/{{resultsImage.title}}"><img src="data:image/jpeg;base64,{{resultsImage.img}}" alt="{{resultsImage.title}}" /></a>
 {{/if}}
 {{/if}}
 

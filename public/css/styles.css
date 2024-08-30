@@ -60,7 +60,7 @@ nav ul img{
     nav ul{
         flex-direction: column;
         gap: 1vh;
-        height: calc(5*6vw + 9*1vh );
+        height: calc(5*6vw + 13*1vh );
         padding-top: 1vh;
         padding-bottom: 1vh;
     }
@@ -389,19 +389,14 @@ input:valid{
     background-color: #F6E6CB;
     min-height: 70vh;
 }
-#sortMenu{
-    
-    display: none;
-    flex-direction: column;
-}
-#sort:hover #sortMenu{
-    display: flex;
-}
-#sort{
-    margin: 3vw auto;
+#mainFeed form{
     text-align: center;
+    display: flex;
+    flex-direction: column;
+    margin: 5vh;
+    justify-content: center;
+    align-items: center;
 }
-
 #mainFeed h1{
     
         text-align: center;
@@ -420,20 +415,20 @@ input:valid{
 }
 #mainFeed #image{
     width: 80vw;
-    height: 90vh;
+    height: 130vh;
     margin: 2vh auto;
     margin-bottom: 5vh;
     background-color: #A0937D;
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 2vh;
+    gap: 0.5vh;
     border-radius: 5vw;
 }
 #mainFeed img{
-    width: 70vw;
+    width: 60vw;
     align-self: center;
-    height: 70vh;
+    height: 90vh;
 }
 #filler{
     width: 100vw;
@@ -474,10 +469,12 @@ input:valid{
     }
     #mainFeed #image{
         width: 88vw;
-        height: 90vh;
+        height: fit-content
     }
     #mainFeed img{
         width: 72vw;
+        height: fit-content;
+        margin-bottom: 3vh;
     }
 }
 @media(min-width:800px ) and (max-width:1200px) {
