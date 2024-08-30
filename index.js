@@ -293,14 +293,18 @@ app.post("/search", async (req, res) => {
   try {
     const searchedUserOrImage = req.body.keyword;
     const findingUser = await User.find({ username: searchedUserOrImage });
-    let findingImage = await Photo.findOne({ title: searchedUserOrImage });
+    let findingImages = await Photo.find({ title: searchedUserOrImage });
     console.log(findingUser)
-    if(findingImage){
-      const buffer=Buffer.from(findingImage.data, 'base64')
-      const finalBuffer=buffer.toString("base64")
-      findingImage.img=finalBuffer
+    if(findingImages){
+      for(let element of findingImages){
+        
+        const buffer=Buffer.from(element.data, 'base64')
+        const finalBuffer=buffer.toString("base64")
+        element.img=finalBuffer
+      
     }
-    if (!findingImage && !findingUser) {
+    }
+    if (!findingImages && !findingUser) {
       console.log("case 1");
       return res.render("search", {
         isAuth: req.isAuth,
@@ -312,10 +316,10 @@ app.post("/search", async (req, res) => {
       
       return res.render("search", {
         isAuth: req.isAuth,
-        resultsImage: findingImage,
+        resultsImage: findingImages,
       });
     }
-    if (!findingImage) {
+    if (!findingImages) {
       console.log("case 3");
       res.render("search", { isAuth: req.isAuth, resultsUser: findingUser });
     }
@@ -323,7 +327,7 @@ app.post("/search", async (req, res) => {
     res.render("search", {
       isAuth: req.isAuth,
       resultsUser: findingUser,
-      resultsImage: findingImage,
+      resultsImage: findingImages,
     });
   } catch (error) {}
 });

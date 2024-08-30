@@ -774,12 +774,53 @@ text-transform: none;
     flex-direction: column;
     text-align: center;
 }
+#search #resultsImage img{
+    max-width: 30vw;
+    margin-bottom: 4vh;
+    border-radius: 4vw;
+}
+#search #resultsUser{
+    text-align: center;
+}
+#search #resultsImage i, #search #resultsUser i{
+    color: darkolivegreen;
+    font-size: 3vw;
+}
 
 
 #like{
-
+background-color: transparent;
+padding: 2vw;
+border: 10px solid darkolivegreen ;
+border-radius: 3vw;
 }
 #unlike{
-    
     background-color: darkolivegreen;
+    color: #F6E6CB;
+    padding: 2vw;
+border: 10px solid #F6E6CB ;
+border-radius: 3vw;
+}
+#imageView #unlike i{
+    color: #F6E6CB;
+    
+}
+
+
+#imageView{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3vh;
+    padding: 3vh 0;
+    background-color: #F6E6CB;
+}
+#imageView img{
+    max-width: 90vw;
+    min-width: 50vw;
+    height: fit-content;
+}
+#imageView i{
+    color: darkolivegreen;
+    font-size: 3vw;
 }

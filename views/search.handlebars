@@ -17,15 +17,20 @@
 {{#if resultsUser}}
 <section id="resultsUser">
     {{#each resultsUser}}
-    <h2>{{username}}</h2>
     <a href="/users/{{username}}"><i class="fa-solid fa-user"></i></a>
+    <h2>{{username}}</h2>
+    
     {{/each}}
 </section>
 {{/if}}
 {{#if resultsImage}}
-<section id="resultsImage"><a href="/images/{{resultsImage.title}}"><h2>{{resultsImage.title}}</h2></a>
-<h2><a href="/users/{{resultsImage.creator}}"><i class="fa-solid fa-user"></i></a> {{resultsImage.creator}}</h2>
-<a href="/images/{{resultsImage.title}}"><img src="data:image/jpeg;base64,{{resultsImage.img}}" alt="{{resultsImage.title}}" /></a></section>
+<section id="resultsImage">
+    {{#each resultsImage}}
+    <a href="/images/{{title}}"><h2>{{title}}</h2></a>
+<h2><a href="/users/{{creator}}"><i class="fa-solid fa-user"></i></a> {{creator}}</h2>
+<a href="/images/{{title}}"><img src="data:image/jpeg;base64,{{img}}" alt="{{title}}" /></a>
+{{/each}}
+</section>
 
 {{/if}}
 {{/if}}

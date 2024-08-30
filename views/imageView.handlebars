@@ -1,6 +1,7 @@
 <div id="imageView">
 <h1>{{results.title}}</h1>
-<h2><a href="/users/{{results.creator}}"><i class="fa-solid fa-user"></i></a> {{results.creator}}</h2>
+<a href="/users/{{results.creator}}"><i class="fa-solid fa-user"></i></a> 
+<h2>{{results.creator}}</h2>
 <img src="data:image/jpeg;base64,{{buffer}}" alt="{{results.title}}" />
 {{#if isAuth}}
 {{#if isAuthor}}
@@ -10,12 +11,12 @@
 
 {{#if hasLiked}}
 <form action="/images/{{results.title}}" method="post">
-<button type="submit"><i id="unlike" class="fa-regular fa-heart"></i></button>
+<button type="submit" id="unlike"><i  class="fa-regular fa-heart"></i></button>
 </form>
 
 {{else}}
 <form action="/images/{{results.title}}" method="post">
-<button type="submit"><i id="like" class="fa-regular fa-heart"></i></button>
+<button type="submit" id="like"><i  class="fa-regular fa-heart"></i></button>
 </form>
 {{/if}}
 
