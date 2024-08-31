@@ -197,6 +197,10 @@ app.get("/images/:id", async (req, res) => {
   });
 });
 
+app.get("*",(req,res)=>{
+  res.render("404",{isAuth:req.isAuth})
+})
+
 app.post("/register", async (req, res) => {
   if (req.body.password !== req.body.rePass) {
     return res.render("register", { error: "Invalid password confirmation" });

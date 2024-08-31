@@ -824,3 +824,14 @@ border-radius: 3vw;
     color: darkolivegreen;
     font-size: 3vw;
 }
+
+
+#errorPage{
+    width: 100vw;
+    background-color: #F6E6CB;
+    color: #A0937D;
+    font-size: 1.5vw;
+    padding-top: 5vh;
+    text-align: center;
+    min-height: 70vh;
+}
